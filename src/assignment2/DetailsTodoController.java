@@ -22,7 +22,8 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Dasha
+ * @author Daria Davydenko
+ * Student number: 200335788
  */
 public class DetailsTodoController implements Initializable {
 
@@ -43,6 +44,12 @@ public class DetailsTodoController implements Initializable {
     @FXML
     private Label errorLabel;
 
+    /**
+     * This method changes scene to Todo List when Back button is pushed.
+     *
+     * @param event
+     * @throws IOException
+     */
     public void backButtonPushed(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("TodosList.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
@@ -54,6 +61,12 @@ public class DetailsTodoController implements Initializable {
         window.show();
     }
 
+    /**
+     * This method validate is the fields is empty. If it is empty, error label
+     * will be set.
+     *
+     * @return
+     */
     public boolean validateInputs() {
 
         if (nameField.getText().isEmpty() && descriptionArea.getText().isEmpty()
@@ -67,29 +80,58 @@ public class DetailsTodoController implements Initializable {
 
     }
 
+    /**
+     * This method save new todo, set it to the table and return to Todo list
+     * page.
+     *
+     * @param event
+     * @throws IOException
+     */
     public void addButtonPushed(ActionEvent event) throws IOException {
         if (validateInputs()) {
             try {
                 String name = nameField.getText();
                 String description = descriptionArea.getText();
-                LocalDate dueDate = dueDateDatePicker.getValue();
-                String importanceToString = importanceComboBox.getSelectionModel().toString();
-                Todos.LevelOfImportance importance;
-                if ("REALLY_IMPORTANT".equals(importanceToString)) {
-                    importance = Todos.LevelOfImportance.REALLY_IMPORTANT;
-                } else if ("IMPORTANT".equals(importanceToString)) {
-                    importance = Todos.LevelOfImportance.IMPORTANT;
-                } else {
-                    importance = Todos.LevelOfImportance.NOT_IMPORTANT;
+                try {
+                    LocalDate dueDate = dueDateDatePicker.getValue();
+                    String importanceToString = importanceComboBox.getSelectionModel().toString();
+                    Todos.LevelOfImportance importance;
+                    if ("REALLY_IMPORTANT".equals(importanceToString)) {
+                        importance = Todos.LevelOfImportance.REALLY_IMPORTANT;
+                    } else if ("IMPORTANT".equals(importanceToString)) {
+                        importance = Todos.LevelOfImportance.IMPORTANT;
+                    } else {
+                        importance = Todos.LevelOfImportance.NOT_IMPORTANT;
+                    }
+
+                    Todos todo = new Todos(name, description, dueDate, importance);
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("TodosList.fxml"));
+                    Parent tableViewParent = loader.load();
+
+                    Scene tableViewScene = new Scene(tableViewParent);
+
+                    TodosListController controller = loader.getController();
+                    controller.addToTable(todo);
+
+                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                    window.setScene(tableViewScene);
+                    window.show();
+                } catch (IllegalArgumentException ex) {
+                    errorLabel.setText("You can't change anything in your past. Sorry :c");
                 }
-                
-                Todos newTodo = new Todos(name, description, dueDate, importance);
+
             } catch (NullPointerException ex) {
                 errorLabel.setText("All fields must be filled");
             }
         }
     }
 
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         importanceComboBox.getItems().setAll(Todos.LevelOfImportance.values());

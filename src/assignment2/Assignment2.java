@@ -8,7 +8,8 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Dasha
+ * @author Daria Davydenko
+ * Student number: 200335788
  */
 public class Assignment2 extends Application {
 
@@ -18,6 +19,7 @@ public class Assignment2 extends Application {
 
         Scene scene = new Scene(root);
         
+        stage.setTitle("Todos");
         stage.setScene(scene);
         stage.show();
     }

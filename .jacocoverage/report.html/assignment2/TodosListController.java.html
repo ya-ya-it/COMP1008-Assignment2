@@ -5,24 +5,160 @@
  */
 package assignment2;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author Dasha
+ * @author Daria Davydenko
+ * Student number: 200335788
  */
-<span class="nc" id="L17">public class TodosListController implements Initializable {</span>
+<span class="nc" id="L37">public class TodosListController implements Initializable {</span>
+
+    @FXML
+    private TableView&lt;Todos&gt; tableView;
+    @FXML
+    private TableColumn&lt;Todos, String&gt; todoColumn;
+    @FXML
+    private TableColumn&lt;Todos, String&gt; descriptionColumn;
+    @FXML
+    private TableColumn&lt;Todos, LocalDate&gt; dueDateColumn;
+    @FXML
+    private TableColumn&lt;Todos, Todos.LevelOfImportance&gt; importanceColumn;
+
+    @FXML
+    private Button doneButton;
+    @FXML
+    private Button addButton;
+
+    /**
+     * This method allows to edit name of todo in the table
+     *
+     * @param edittedCell
+     */
+    public void changeNameCellEvent(CellEditEvent edittedCell) {
+<span class="nc" id="L61">        Todos todoSelected = tableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc" id="L62">        todoSelected.setName(edittedCell.getNewValue().toString());</span>
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * This method set Done Button when the user click to the table.
+     */
+    public void userClickedOnTable() {
+<span class="nc" id="L69">        this.doneButton.setDisable(false);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * This method allows to edit description of todo in the table
+     *
+     * @param edittedCell
+     */
+    public void changeDescriptionCellEvent(CellEditEvent edittedCell) {
+<span class="nc" id="L78">        Todos todoSelected = tableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc" id="L79">        todoSelected.setDescription(edittedCell.getNewValue().toString());</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * This method changes the scene to Add New Todo.
+     *
+     * @param event
+     * @throws IOException
+     */
+    public void addButtonPushed(ActionEvent event) throws IOException {
+<span class="nc" id="L89">        FXMLLoader loader = new FXMLLoader();</span>
+<span class="nc" id="L90">        loader.setLocation(getClass().getResource(&quot;DetailsTodo.fxml&quot;));</span>
+<span class="nc" id="L91">        Parent tableViewParent = loader.load();</span>
+
+<span class="nc" id="L93">        Scene tableViewScene = new Scene(tableViewParent);</span>
+
+<span class="nc" id="L95">        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();</span>
+
+<span class="nc" id="L97">        window.setScene(tableViewScene);</span>
+<span class="nc" id="L98">        window.show();</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * This method marks todo as done and delete it from the table when the Done
+     * button is pushed.
+     */
+    public void doneButtonPushed() {
+        ObservableList&lt;Todos&gt; selectedRows, allTodos;
+<span class="nc" id="L107">        allTodos = tableView.getItems();</span>
+
+<span class="nc" id="L109">        selectedRows = tableView.getSelectionModel().getSelectedItems();</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        for (Todos todo : selectedRows) {</span>
+<span class="nc" id="L112">            todo.setIsDone();</span>
+<span class="nc" id="L113">            allTodos.remove(todo);</span>
+<span class="nc" id="L114">        }</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * This method adds a new todo to a Table from Add New Todo scene.
+     *
+     * @param todo
+     */
+    public void addToTable(Todos todo) {
+<span class="nc" id="L123">        tableView.getItems().add(todo);</span>
+<span class="nc" id="L124">    }</span>
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-<span class="nc" id="L25">    }    </span>
-    
+
+<span class="nc" id="L132">        todoColumn.setCellValueFactory(new PropertyValueFactory&lt;Todos, String&gt;(&quot;name&quot;));</span>
+<span class="nc" id="L133">        descriptionColumn.setCellValueFactory(new PropertyValueFactory&lt;Todos, String&gt;(&quot;description&quot;));</span>
+<span class="nc" id="L134">        dueDateColumn.setCellValueFactory(new PropertyValueFactory&lt;Todos, LocalDate&gt;(&quot;dueDate&quot;));</span>
+<span class="nc" id="L135">        importanceColumn.setCellValueFactory(new PropertyValueFactory&lt;Todos, Todos.LevelOfImportance&gt;(&quot;importance&quot;));</span>
+
+<span class="nc" id="L137">        tableView.setItems(getTodos());</span>
+
+<span class="nc" id="L139">        tableView.setEditable(true);</span>
+<span class="nc" id="L140">        todoColumn.setCellFactory(TextFieldTableCell.forTableColumn());</span>
+<span class="nc" id="L141">        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());</span>
+
+<span class="nc" id="L143">        tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);</span>
+
+<span class="nc" id="L145">        this.doneButton.setDisable(true);</span>
+
+<span class="nc" id="L147">    }</span>
+
+    /**
+     * Just to fill a table with an example values
+     *
+     * @return
+     */
+    public ObservableList&lt;Todos&gt; getTodos() {
+<span class="nc" id="L155">        ObservableList&lt;Todos&gt; todos = FXCollections.observableArrayList();</span>
+<span class="nc" id="L156">        todos.add(new Todos(&quot;Assignment&quot;, &quot;Finish this assignment in time&quot;,</span>
+<span class="nc" id="L157">                LocalDate.of(2017, Month.APRIL, 25), Todos.LevelOfImportance.REALLY_IMPORTANT));</span>
+<span class="nc" id="L158">        todos.add(new Todos(&quot;GitHub&quot;, &quot;Finish this assignment in time&quot;,</span>
+<span class="nc" id="L159">                LocalDate.of(2017, Month.APRIL, 25), Todos.LevelOfImportance.IMPORTANT));</span>
+<span class="nc" id="L160">        return todos;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

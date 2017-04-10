@@ -31,7 +31,8 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Dasha
+ * @author Daria Davydenko
+ * Student number: 200335788
  */
 public class TodosListController implements Initializable {
 
@@ -51,20 +52,39 @@ public class TodosListController implements Initializable {
     @FXML
     private Button addButton;
 
+    /**
+     * This method allows to edit name of todo in the table
+     *
+     * @param edittedCell
+     */
     public void changeNameCellEvent(CellEditEvent edittedCell) {
         Todos todoSelected = tableView.getSelectionModel().getSelectedItem();
         todoSelected.setName(edittedCell.getNewValue().toString());
     }
 
+    /**
+     * This method set Done Button when the user click to the table.
+     */
     public void userClickedOnTable() {
         this.doneButton.setDisable(false);
     }
 
+    /**
+     * This method allows to edit description of todo in the table
+     *
+     * @param edittedCell
+     */
     public void changeDescriptionCellEvent(CellEditEvent edittedCell) {
         Todos todoSelected = tableView.getSelectionModel().getSelectedItem();
         todoSelected.setDescription(edittedCell.getNewValue().toString());
     }
 
+    /**
+     * This method changes the scene to Add New Todo.
+     *
+     * @param event
+     * @throws IOException
+     */
     public void addButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("DetailsTodo.fxml"));
@@ -78,6 +98,10 @@ public class TodosListController implements Initializable {
         window.show();
     }
 
+    /**
+     * This method marks todo as done and delete it from the table when the Done
+     * button is pushed.
+     */
     public void doneButtonPushed() {
         ObservableList<Todos> selectedRows, allTodos;
         allTodos = tableView.getItems();
@@ -85,9 +109,18 @@ public class TodosListController implements Initializable {
         selectedRows = tableView.getSelectionModel().getSelectedItems();
 
         for (Todos todo : selectedRows) {
-            allTodos.remove(todo);
             todo.setIsDone();
+            allTodos.remove(todo);
         }
+    }
+
+    /**
+     * This method adds a new todo to a Table from Add New Todo scene.
+     *
+     * @param todo
+     */
+    public void addToTable(Todos todo) {
+        tableView.getItems().add(todo);
     }
 
     /**
@@ -110,8 +143,14 @@ public class TodosListController implements Initializable {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         this.doneButton.setDisable(true);
+
     }
 
+    /**
+     * Just to fill a table with an example values
+     *
+     * @return
+     */
     public ObservableList<Todos> getTodos() {
         ObservableList<Todos> todos = FXCollections.observableArrayList();
         todos.add(new Todos("Assignment", "Finish this assignment in time",

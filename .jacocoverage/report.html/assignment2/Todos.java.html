@@ -13,7 +13,7 @@ public class Todos extends List {
     private LocalDate dueDate;
 
 <span class="pc" id="L15">    public enum LevelOfImportance {</span>
-<span class="fc" id="L16">        REALLY_IMPORTANR, IMPORTANT, NOT_IMPORTANT</span>
+<span class="fc" id="L16">        REALLY_IMPORTANT, IMPORTANT, NOT_IMPORTANT</span>
     };
     private LevelOfImportance importance;
 
@@ -21,18 +21,17 @@ public class Todos extends List {
      * This is a constructor for Todos class. It extends List class.
      *
      * @param name
-     * @param isDone
      * @param description
      * @param dueDate
      * @param importance
      */
     public Todos(String name, String description,
-            LocalDate dueDate, LevelOfImportance importance, Boolean isDone) {
-<span class="fc" id="L31">        super(name, isDone);</span>
-<span class="fc" id="L32">        this.description = description;</span>
-<span class="fc" id="L33">        setDueDate(dueDate);</span>
-<span class="fc" id="L34">        this.importance = importance;</span>
-<span class="fc" id="L35">    }</span>
+            LocalDate dueDate, LevelOfImportance importance) {
+<span class="fc" id="L30">        super(name);</span>
+<span class="fc" id="L31">        this.description = description;</span>
+<span class="fc" id="L32">        setDueDate(dueDate);</span>
+<span class="fc" id="L33">        this.importance = importance;</span>
+<span class="fc" id="L34">    }</span>
 
     /**
      * This method checks if the due date is later than today. If yes, the due
@@ -41,40 +40,40 @@ public class Todos extends List {
      * @param dueDate
      */
     public void setDueDate(LocalDate dueDate) {
-<span class="fc" id="L44">        LocalDate today = LocalDate.now();</span>
+<span class="fc" id="L43">        LocalDate today = LocalDate.now();</span>
 
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (dueDate.isAfter(today)) {</span>
-<span class="fc" id="L47">            this.dueDate = dueDate;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (dueDate.isAfter(today)) {</span>
+<span class="fc" id="L46">            this.dueDate = dueDate;</span>
         } else {
-<span class="fc" id="L49">            throw new IllegalArgumentException(&quot;You can't change anything in your past. Sorry :c&quot;);</span>
+<span class="fc" id="L48">            throw new IllegalArgumentException(&quot;You can't change anything in your past. Sorry :c&quot;);</span>
         }
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L50">    }</span>
 
     @Override
     public String toString() {
-<span class="fc" id="L55">        return getName() + &quot;: &quot; + description + &quot; till &quot; + dueDate + &quot;. It is &quot; + importance;</span>
+<span class="fc" id="L54">        return getName() + &quot;: &quot; + description + &quot; till &quot; + dueDate + &quot;. It is &quot; + importance;</span>
     }
     
     //Getters and Setters
 
     public String getDescription() {
-<span class="fc" id="L61">        return description;</span>
+<span class="fc" id="L60">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="fc" id="L65">        this.description = description;</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L64">        this.description = description;</span>
+<span class="fc" id="L65">    }</span>
 
     public LocalDate getDueDate() {
-<span class="fc" id="L69">        return dueDate;</span>
+<span class="fc" id="L68">        return dueDate;</span>
     }
 
     public LevelOfImportance getImportance() {
-<span class="fc" id="L73">        return importance;</span>
+<span class="fc" id="L72">        return importance;</span>
     }
 
     public void setImportance(LevelOfImportance importance) {
-<span class="fc" id="L77">        this.importance = importance;</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L76">        this.importance = importance;</span>
+<span class="fc" id="L77">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

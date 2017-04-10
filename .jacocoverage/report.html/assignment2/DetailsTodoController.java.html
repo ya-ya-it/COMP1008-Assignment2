@@ -1,28 +1,142 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DetailsTodoController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Assignment2&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">assignment2</a> &gt; <span class="el_source">DetailsTodoController.java</span></div><h1>DetailsTodoController.java</h1><pre class="source lang-java linenums">/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package assignment2;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DetailsTodoController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Assignment2&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">assignment2</a> &gt; <span class="el_source">DetailsTodoController.java</span></div><h1>DetailsTodoController.java</h1><pre class="source lang-java linenums">package assignment2;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author Dasha
+ * @author Daria Davydenko
+ * Student number: 200335788
  */
-<span class="nc" id="L17">public class DetailsTodoController implements Initializable {</span>
+<span class="nc" id="L28">public class DetailsTodoController implements Initializable {</span>
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextArea descriptionArea;
+    @FXML
+    private DatePicker dueDateDatePicker;
+    @FXML
+    private ComboBox importanceComboBox;
+
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private Label errorLabel;
+
+    /**
+     * This method changes scene to Todo List when Back button is pushed.
+     *
+     * @param event
+     * @throws IOException
+     */
+    public void backButtonPushed(ActionEvent event) throws IOException {
+<span class="nc" id="L54">        Parent tableViewParent = FXMLLoader.load(getClass().getResource(&quot;TodosList.fxml&quot;));</span>
+<span class="nc" id="L55">        Scene tableViewScene = new Scene(tableViewParent);</span>
+
+        //This line gets the Stage information
+<span class="nc" id="L58">        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();</span>
+
+<span class="nc" id="L60">        window.setScene(tableViewScene);</span>
+<span class="nc" id="L61">        window.show();</span>
+<span class="nc" id="L62">    }</span>
+
+    /**
+     * This method validate is the fields is empty. If it is empty, error label
+     * will be set.
+     *
+     * @return
+     */
+    public boolean validateInputs() {
+
+<span class="nc bnc" id="L72" title="All 4 branches missed.">        if (nameField.getText().isEmpty() &amp;&amp; descriptionArea.getText().isEmpty()</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">                &amp;&amp; dueDateDatePicker.getValue() != null &amp;&amp; importanceComboBox.getValue() != null) {</span>
+<span class="nc" id="L74">            errorLabel.setText(&quot;All fields must be filled&quot;);</span>
+<span class="nc" id="L75">            return false;</span>
+        } else {
+<span class="nc" id="L77">            errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L78">            return true;</span>
+        }
+
+    }
+
+    /**
+     * This method save new todo, set it to the table and return to Todo list
+     * page.
+     *
+     * @param event
+     * @throws IOException
+     */
+    public void addButtonPushed(ActionEvent event) throws IOException {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (validateInputs()) {</span>
+            try {
+<span class="nc" id="L93">                String name = nameField.getText();</span>
+<span class="nc" id="L94">                String description = descriptionArea.getText();</span>
+                try {
+<span class="nc" id="L96">                    LocalDate dueDate = dueDateDatePicker.getValue();</span>
+<span class="nc" id="L97">                    String importanceToString = importanceComboBox.getSelectionModel().toString();</span>
+                    Todos.LevelOfImportance importance;
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                    if (&quot;REALLY_IMPORTANT&quot;.equals(importanceToString)) {</span>
+<span class="nc" id="L100">                        importance = Todos.LevelOfImportance.REALLY_IMPORTANT;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                    } else if (&quot;IMPORTANT&quot;.equals(importanceToString)) {</span>
+<span class="nc" id="L102">                        importance = Todos.LevelOfImportance.IMPORTANT;</span>
+                    } else {
+<span class="nc" id="L104">                        importance = Todos.LevelOfImportance.NOT_IMPORTANT;</span>
+                    }
+
+<span class="nc" id="L107">                    Todos todo = new Todos(name, description, dueDate, importance);</span>
+
+<span class="nc" id="L109">                    FXMLLoader loader = new FXMLLoader();</span>
+<span class="nc" id="L110">                    loader.setLocation(getClass().getResource(&quot;TodosList.fxml&quot;));</span>
+<span class="nc" id="L111">                    Parent tableViewParent = loader.load();</span>
+
+<span class="nc" id="L113">                    Scene tableViewScene = new Scene(tableViewParent);</span>
+
+<span class="nc" id="L115">                    TodosListController controller = loader.getController();</span>
+<span class="nc" id="L116">                    controller.addToTable(todo);</span>
+
+<span class="nc" id="L118">                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();</span>
+
+<span class="nc" id="L120">                    window.setScene(tableViewScene);</span>
+<span class="nc" id="L121">                    window.show();</span>
+<span class="nc" id="L122">                } catch (IllegalArgumentException ex) {</span>
+<span class="nc" id="L123">                    errorLabel.setText(&quot;You can't change anything in your past. Sorry :c&quot;);</span>
+<span class="nc" id="L124">                }</span>
+
+<span class="nc" id="L126">            } catch (NullPointerException ex) {</span>
+<span class="nc" id="L127">                errorLabel.setText(&quot;All fields must be filled&quot;);</span>
+<span class="nc" id="L128">            }</span>
+        }
+<span class="nc" id="L130">    }</span>
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-<span class="nc" id="L25">    }    </span>
-    
+<span class="nc" id="L137">        importanceComboBox.getItems().setAll(Todos.LevelOfImportance.values());</span>
+<span class="nc" id="L138">        errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L139">    }</span>
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

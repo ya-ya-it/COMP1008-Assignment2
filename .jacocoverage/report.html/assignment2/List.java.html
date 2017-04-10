@@ -19,7 +19,7 @@ public class List {
      * @param isDone 
      */
     
-<span class="fc" id="L22">    public List(String name, Boolean isDone) {</span>
+<span class="fc" id="L22">    public List(String name) {</span>
 <span class="fc" id="L23">        this.name = name;</span>
 <span class="fc" id="L24">        this.isDone = false;</span>
 <span class="fc" id="L25">        list = new ArrayList&lt;&gt;();</span>
@@ -63,29 +63,28 @@ public class List {
 
     /**
      * This method sets the isDone variable as true
-     * @param isDone 
      */
     
-    public void setIsDone(Boolean isDone) {
-<span class="fc" id="L70">        this.isDone = true;</span>
-<span class="fc" id="L71">    }</span>
+    public void setIsDone() {
+<span class="fc" id="L69">        this.isDone = true;</span>
+<span class="fc" id="L70">    }</span>
     
     //Getters and Setters
     
     public String getName() {
-<span class="fc" id="L76">        return name;</span>
+<span class="fc" id="L75">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L80">        this.name = name;</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L79">        this.name = name;</span>
+<span class="fc" id="L80">    }</span>
 
     public Boolean getIsDone() {
-<span class="fc" id="L84">        return isDone;</span>
+<span class="fc" id="L83">        return isDone;</span>
     }
 
     public ArrayList&lt;String&gt; getList() {
-<span class="fc" id="L88">        return list;</span>
+<span class="fc" id="L87">        return list;</span>
     }
     
 }
